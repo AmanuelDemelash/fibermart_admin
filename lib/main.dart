@@ -16,8 +16,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Fibermart',
       theme: ThemeData(
+        fontFamily: "myfont",
         primaryColor: Constants().primColor,
         useMaterial3: true,
       ),

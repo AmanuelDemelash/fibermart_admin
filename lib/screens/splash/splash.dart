@@ -1,4 +1,5 @@
 
+import 'package:fibermart_admin/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -16,25 +17,25 @@ class _SplashState extends State<Splash> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(seconds: 100),() {
+    Future.delayed(const Duration(seconds:59),() {
       Get.toNamed("/homepage");
     },);
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.withOpacity(0.7),
+      backgroundColor: Constants().primColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Image(image: AssetImage("assets/images/logo.png"),width: 100,height: 100,),
-            const SizedBox(height:35,),
-            SpinKitSquareCircle(
+            const Image(image: AssetImage("assets/images/logo.png"),width: 170,height: 170,),
+            const SizedBox(height:50,),
+            SpinKitCircle(
               itemBuilder: (BuildContext context, int index) {
                 return DecoratedBox(
                   decoration: BoxDecoration(
-                    color: index.isEven ? Colors.red : Colors.white,
+                    color: index.isEven ? Colors.white : Colors.green,
                   ),
                 );
               },
