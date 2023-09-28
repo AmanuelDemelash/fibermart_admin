@@ -60,7 +60,7 @@ class Orders extends StatelessWidget {
                                       .value = index,
                                   child: AnimatedContainer(
                                     duration:
-                                    const Duration(seconds: 1),
+                                    const Duration(seconds:100),
                                     margin:const EdgeInsets.only(right: 10),
                                     child: Center(
                                       child: Column(

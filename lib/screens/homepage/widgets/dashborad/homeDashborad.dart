@@ -94,7 +94,7 @@ class HomeDashborad extends StatelessWidget {
                 child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Completed Orders",style: TextStyle(fontSize: 20),),
+                    const Text("Recent Completed Orders",style: TextStyle(fontSize:18),),
                     const SizedBox(height:20,),
                     DataTable(
                       headingTextStyle: TextStyle(fontWeight: FontWeight.bold,color: Constants().primColor,fontSize: 16),
