@@ -46,7 +46,7 @@ class CardDashbord extends StatelessWidget {
               Icon(Icons.auto_graph,color:color,)
             ],
           )
-        ].animate(interval: 400.ms).fade(duration: 300.ms),
+        ].animate(interval: 300.ms).fade(duration: 200.ms),
       ),
     );
   }

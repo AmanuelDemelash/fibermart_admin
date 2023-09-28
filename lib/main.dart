@@ -1,8 +1,8 @@
+import 'package:fibermart_admin/bindings/appBinding.dart';
 import 'package:fibermart_admin/screens/homepage/homepage.dart';
 import 'package:fibermart_admin/screens/splash/splash.dart';
 import 'package:fibermart_admin/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 void main() {
@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      initialBinding: AppBindings(),
       debugShowCheckedModeBanner: false,
       title: 'Fibermart',
       theme: ThemeData(

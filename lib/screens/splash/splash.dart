@@ -17,7 +17,7 @@ class _SplashState extends State<Splash> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(const Duration(seconds:59),() {
+    Future.delayed(const Duration(seconds:20),() {
       Get.toNamed("/homepage");
     },);
   }

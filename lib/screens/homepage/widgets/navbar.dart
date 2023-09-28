@@ -20,9 +20,9 @@ class NavBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("FiberMart",style: TextStyle(fontWeight: FontWeight.bold,fontSize:30,color: Constants().primColor),),
-            const SizedBox(width: 300,),
+            const SizedBox(width:200,),
             SizedBox(
-              width: 300,
+              width:500,
               height: 80,
               child:
               TextField(
