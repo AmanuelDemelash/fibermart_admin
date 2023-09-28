@@ -52,7 +52,6 @@ class Products extends StatelessWidget {
                 ],
                 showCheckboxColumn: true,
                 rowsPerPage: 10,
-                arrowHeadColor: Constants().primColor,
                 columns:const [
                 DataColumn(label: Text("Id"),),
                   DataColumn(label: Text("Image")),
