@@ -1,6 +1,11 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fibermart_admin/screens/homepage/widgets/order/controllers/ordercontroller.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../../../utils/constants.dart';
@@ -11,11 +16,13 @@ class Orders extends StatelessWidget {
    Orders({super.key});
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Obx(() =>
+      Container(
         width: Get.width,
         padding:const EdgeInsets.all(25),
     color: Constants().backColor,
-    child:SingleChildScrollView(
+    child:Get.find<OrderController>().isLoading.value?const Center(child: CircularProgressIndicator(),):
+    SingleChildScrollView(
       child: Column(
       children: [
         const ListTile(
@@ -32,7 +39,7 @@ class Orders extends StatelessWidget {
             const SizedBox(width: 20,),
             CardDashbord(title: "10k",subtitle: "Canceled Order",color: Constants().primColor,icon: Icons.cancel),
             const SizedBox(width: 20,),
-            CardDashbord(title: "123",subtitle: "Total order",color: Colors.orange,icon: Icons.add_shopping_cart,),
+            CardDashbord(title: "${Get.find<OrderController>().flowerPotOrders.value.length}",subtitle: "Total order",color: Colors.orange,icon: Icons.add_shopping_cart,),
           ],
         ),
         const SizedBox(height: 25,),
@@ -104,54 +111,86 @@ class Orders extends StatelessWidget {
                       ),
                     )),
                 const SizedBox(height:20,),
-                DataTable(
-                    headingTextStyle: TextStyle(fontWeight: FontWeight.bold,color: Constants().primColor,fontSize: 16),
-                    dataRowMaxHeight: 60,
-                    columns:const[
-                      DataColumn(label: Text("Id")),
-                      DataColumn(label: Text("Name")),
-                      DataColumn(label: Text("Customer")),
-                      DataColumn(label: Text("Date")),
-                      DataColumn(label: Text("Phone")),
-                      DataColumn(label: Text("#Items")),
-                      DataColumn(label: Text("Total price")),
-                      DataColumn(label: Text("Status")),
-                      DataColumn(label: Text("")),
-                    ],
-                    rows:List.generate(10, (index) => DataRow(
-                        cells:[
-                          DataCell(Text("0976")),
-                          DataCell(Text("Iphone 13"),),
-                          DataCell(Text("Amanuwl"),),
-                          DataCell(Text("12/3/2023"),),
-                          DataCell(Text("987545727"),),
-                          DataCell(Text("1"),),
-                          DataCell(Text("ETB 50000"),),
-                          DataCell(Container(
-                            padding:const EdgeInsets.all(7),
-                               decoration: BoxDecoration(
-                                 color: Colors.orangeAccent.withOpacity(0.3)
-                               ),
-                              child:const Text("Pending",style: TextStyle(color: Colors.orangeAccent),)),),
-                          DataCell(
-                              Row(
-                                children: [
-                                  IconButton(onPressed:() {
-                                  }, icon:const Icon(Icons.remove_red_eye)),
-                                  IconButton(
-                                      onPressed:() {
-                                      }, icon:const Icon(Icons.delete_forever)),
-                                ],
-                              ))
-                        ])))
+               Obx(() =>IndexedStack(
+                  index:Get.find<HomepageController>().selectedIndex.value,
+                  children: [
+                    SizedBox(
+                      width: Get.width,
+                      child: PaginatedDataTable(
+                          showCheckboxColumn: true,
+                          rowsPerPage:10,
+                          columns:const [
+                            DataColumn(label: Text("Id")),
+                            DataColumn(label: Text("Logo")),
+                            DataColumn(label: Text("SelectedFlowerpot")),
+                            DataColumn(label: Text("Quantity")),
+                            DataColumn(label: Text("SelectedEntityType")),
+                            DataColumn(label: Text("OrderName")),
+                            DataColumn(label: Text("OrderPhone")),
+                            DataColumn(label: Text("OrderAddress")),
+                            DataColumn(label: Text("OrderNote")),
+                            DataColumn(label: Text("IsUrgentDelivery")),
+                            DataColumn(label: Text("SelectedSales")),
+                            DataColumn(label: Text("Discount")),
+                            DataColumn(label: Text("TotalPrice")),
+                            DataColumn(label: Text("CreatedAt")),
+                            DataColumn(label: Text("Payments")),
+                            DataColumn(label: Text("")),
+                          ],
+                          source: ProductDatatableSource()),
+                    ),
+                  ],
+                ))
               ],
             )
 
         )
-
-      ]
-        ,
+      ],
       ),
-    )).animate().slideX();
+    )).animate().slideX());
   }
+}
+
+class ProductDatatableSource extends DataTableSource {
+  @override
+  DataRow? getRow(int index) {
+    return  DataRow(cells: [
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].id.toString())),
+      DataCell(CachedNetworkImage(
+        imageUrl:Get.find<OrderController>().flowerPotOrders.value[index].logoFilePath!,
+        placeholder: (context, url) =>FaIcon(FontAwesomeIcons.image,color: Constants().primColor,),
+        errorWidget: (context, url, error) =>FaIcon(FontAwesomeIcons.image,color: Constants().primColor,),
+        width: 50,
+        height: 50,
+      ),),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].selectedFlowerpot.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].quantity.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].selectedEntityType.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].orderName.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].orderPhone.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].orderAddress.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].orderNote.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].isUrgentDelivery.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].selectedSales.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].discount.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].totalPrice.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].createdAt.toString())),
+      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].payments.toString())),
+      DataCell(
+          IconButton(
+              onPressed:() {
+              }, icon:const Icon(Icons.delete_forever)),
+    ),
+
+    ]);
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount =>Get.find<OrderController>().flowerPotOrders.value.length;
+
+  @override
+  int get selectedRowCount => 0;
 }

@@ -1,4 +1,5 @@
 
+import 'package:fibermart_admin/screens/homepage/controller/homepageController.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/dashborad/widgets/carddashbord.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -10,12 +11,13 @@ class HomeDashborad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return   Container(
+    return
+        Container(
       width: Get.width,
         padding:const EdgeInsets.all(25),
         color: Constants().backColor,
         child:
-        SingleChildScrollView(
+           SingleChildScrollView(
           physics:const BouncingScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -37,7 +39,7 @@ class HomeDashborad extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CardDashbord(title: "400",subtitle: "Order received",color: Colors.green,icon: Icons.shopping_cart,),
+                  CardDashbord(title: "200",subtitle: "Order received",color: Colors.green,icon: Icons.shopping_cart,),
                   CardDashbord(title: "1050",subtitle: "Total sale",color: Colors.deepPurple,icon: Icons.monetization_on_rounded),
                   CardDashbord(title: "10k",subtitle: "Total customer",color: Constants().primColor,icon: Icons.people),
                   CardDashbord(title: "123",subtitle: "Pending order",color: Colors.orange,icon: Icons.add_shopping_cart,),
@@ -86,49 +88,34 @@ class HomeDashborad extends StatelessWidget {
               // recent orders
               Container(
                 width: Get.width,
-                padding:const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Constants().scafoldColor,
-                  borderRadius: BorderRadius.circular(10)
-                ),
+                  padding:const EdgeInsets.only(left: 15,top: 20,right: 15),
+                  decoration: BoxDecoration(
+                      color: Constants().scafoldColor,
+                      borderRadius: BorderRadius.circular(10)
+                  ),
                 child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("Recent Completed Orders",style: TextStyle(fontSize:18),),
                     const SizedBox(height:20,),
-                    DataTable(
-                      headingTextStyle: TextStyle(fontWeight: FontWeight.bold,color: Constants().primColor,fontSize: 16),
-                        columns:const[
-                          DataColumn(label: Text("Id")),
-                          DataColumn(label: Text("Name")),
-                          DataColumn(label: Text("Customer")),
-                          DataColumn(label: Text("Date")),
-                          DataColumn(label: Text("Phone")),
-                          DataColumn(label: Text("#Items")),
-                          DataColumn(label: Text("Total price")),
-                          DataColumn(label: Text("Status")),
-                          DataColumn(label: Text("")),
-                        ],
-                        rows:List.generate(10, (index) => DataRow(
-                            cells:[
-                          DataCell(Text("0976")),
-                          DataCell(Text("Iphone 13"),),
-                          DataCell(Text("Amanuwl"),),
-                          DataCell(Text("12/3/2023"),),
-                          DataCell(Text("987545727"),),
-                          DataCell(Text("1"),),
-                          DataCell(Text("ETB 50000"),),
-                          DataCell(Text("Pending"),),
-                          DataCell(Row(
-                            children: [
-                              IconButton(onPressed:() {
-                              }, icon:const Icon(Icons.remove_red_eye)),
-                              IconButton(
-                                  onPressed:() {
-                              }, icon:const Icon(Icons.delete_forever)),
-                            ],
-                          ))
-                        ])))
+                    SizedBox(
+                      width: Get.width,
+                      child: PaginatedDataTable(
+                          showCheckboxColumn: true,
+                          rowsPerPage: 10,
+                          columns:const [
+                            DataColumn(label: Text("Id")),
+                            DataColumn(label: Text("Name")),
+                            DataColumn(label: Text("Customer")),
+                            DataColumn(label: Text("Date")),
+                            DataColumn(label: Text("Phone")),
+                            DataColumn(label: Text("#Items")),
+                            DataColumn(label: Text("Total price")),
+                            DataColumn(label: Text("Status")),
+                            DataColumn(label: Text("")),
+                          ],
+                          source: ProductDatatableSource()),
+                    ),
                   ],
                 )
                 
@@ -139,4 +126,39 @@ class HomeDashborad extends StatelessWidget {
         )
     );
   }
+}
+
+class ProductDatatableSource extends DataTableSource {
+@override
+DataRow? getRow(int index) {
+return DataRow(cells: [
+  DataCell(Text("0976")),
+  DataCell(Text("Iphone 13"),),
+  DataCell(Text("Amanuwl"),),
+  DataCell(Text("12/3/2023"),),
+  DataCell(Text("987545727"),),
+  DataCell(Text("1"),),
+  DataCell(Text("ETB 50000"),),
+  DataCell(Text("Pending"),),
+  DataCell(Row(
+    children: [
+      IconButton(onPressed:() {
+      }, icon:const Icon(Icons.remove_red_eye)),
+      IconButton(
+          onPressed:() {
+          }, icon:const Icon(Icons.delete_forever)),
+    ],
+  ))
+]
+);
+}
+
+@override
+bool get isRowCountApproximate => false;
+
+@override
+int get rowCount =>20;
+
+@override
+int get selectedRowCount => 0;
 }

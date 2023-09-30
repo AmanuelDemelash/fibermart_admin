@@ -33,7 +33,7 @@ class NavBar extends StatelessWidget {
                 ),
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: Constants().scafoldColor,
+                  fillColor: Constants().backColor,
                   suffixIcon:const Icon(Icons.search,color: Colors.black45,),
                   enabledBorder: OutlineInputBorder(
                       borderRadius:const BorderRadius.all(Radius.circular(10)),

@@ -16,10 +16,11 @@ class Products extends StatelessWidget {
     color: Constants().backColor,
     child:SingleChildScrollView(
     child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
     children: [
       ListTile(
-    title: const Text("Product",style: TextStyle(fontSize: 25,),),
-    subtitle:const Text("product in stock",style: TextStyle(color: Colors.black38),),
+      title: const Text("Product",style: TextStyle(fontSize: 25,),),
+      subtitle:const Text("product in stock",style: TextStyle(color: Colors.black38),),
       trailing:
           ElevatedButton.icon(
             label: Text("Add product",style: TextStyle(color: Constants().backColor),),
@@ -40,34 +41,26 @@ class Products extends StatelessWidget {
                 color: Constants().scafoldColor,
                 borderRadius: BorderRadius.circular(10)
             ),
-          child: Column(
-            children: [
-              PaginatedDataTable(
-                  header:const Row(
-                    children: [
-                     Text("100 Products",style: TextStyle(fontSize: 14),),
-                      SizedBox(width: 12,),
-                ],),
-                actions: [
-                ],
-                showCheckboxColumn: true,
-                rowsPerPage: 10,
-                columns:const [
-                DataColumn(label: Text("Id"),),
-                  DataColumn(label: Text("Image")),
-                DataColumn(label: Text("Name")),
-                DataColumn(label: Text("Description")),
-                DataColumn(label: Text("Price")),
-                DataColumn(label: Text("Quantity")),
+          child:
+          PaginatedDataTable(
+                    showCheckboxColumn: true,
+                    rowsPerPage: 10,
+                    columns:const [
+                    DataColumn(label: Text("Id"),),
+                      DataColumn(label: Text("Image")),
+                    DataColumn(label: Text("Name")),
+                    DataColumn(label: Text("Description")),
+                    DataColumn(label: Text("Price")),
+                    DataColumn(label: Text("Quantity")),
+                      DataColumn(label: Text("")),
+                  ],
+                      source: ProductDatatableSource()),
 
-              ], source: ProductDatatableSource())
-            ],
-          ),
         )
-
-
     ]
-    ))).animate().slideX()
+    )
+    )
+    ).animate().slideX()
     ;
   }
 }
@@ -82,6 +75,7 @@ class ProductDatatableSource extends DataTableSource {
       DataCell(Text("Iphone13 256Gb 6gb ram")),
       DataCell(Text("ETB 45000")),
       DataCell(Text("6")),
+      DataCell(Icon(Icons.delete,color: Colors.red,))
     ]
     );
   }

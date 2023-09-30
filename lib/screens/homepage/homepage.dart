@@ -16,9 +16,6 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed:() {
-
-      },),
       body: SafeArea(
           child: Column(
             children: [
@@ -34,8 +31,9 @@ class HomePage extends StatelessWidget {
                         destinations:const[
                           NavigationRailDestination(icon:Icon(Icons.dashboard_customize_outlined), label:Text("Dashboard")),
                           NavigationRailDestination(icon:Icon(Icons.pages_rounded), label:Text("Product")),
-                          NavigationRailDestination(icon:Icon(Icons.category), label:Text("Category")),
                           NavigationRailDestination(icon:Icon(Icons.add_shopping_cart), label:Text("Orders")),
+                          NavigationRailDestination(icon:Icon(Icons.category), label:Text("Category")),
+                          NavigationRailDestination(icon:Icon(Icons.person), label:Text("Sales")),
                           NavigationRailDestination(icon:Icon(Icons.people), label:Text("Customers")),
                           NavigationRailDestination(icon:Icon(Icons.price_change), label:Text("Coupon")),
                           NavigationRailDestination(icon:Icon(Icons.auto_graph), label:Text("Report")),
@@ -63,12 +61,13 @@ class HomePage extends StatelessWidget {
                           //dashbord
                           HomeDashborad(),
                           Products(),
+                          //orders
+                          Orders(),
                           Container(
                             color: Constants().backColor,
                             child: Text("catagory"),
                           ),
-                          //orders
-                          Orders()
+
                         ],
                       ),
                   )

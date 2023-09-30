@@ -1,6 +1,6 @@
 
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -27,11 +27,13 @@ class ConnectivityControllers extends GetxController{
     }  else if (connectivityResult == ConnectivityResult.none) {
       isConnected.value=false;
        Get.snackbar("Connection lost", "please cheek your connection",
+           colorText: Colors.white,
            duration: const Duration(seconds:10),
            padding: const EdgeInsets.all(10),
            isDismissible: true,
-           icon:const FaIcon(FontAwesomeIcons.wifi),
-         margin: EdgeInsets.only(left: 20,top: 20,right: Get.width/2)
+           icon:const FaIcon(FontAwesomeIcons.wifi,color: Colors.white,),
+           margin: EdgeInsets.only(left: 20,top: 20,right: Get.width/2),
+           backgroundColor:Colors.red
        );
     }
     // subscribe netework state
@@ -49,11 +51,13 @@ class ConnectivityControllers extends GetxController{
       }  else if (result == ConnectivityResult.none) {
         isConnected.value=false;
         Get.snackbar("Connection lost", "please cheek your connection",
+            colorText: Colors.white,
             duration: const Duration(seconds:10),
             padding: const EdgeInsets.all(10),
             isDismissible: true,
-            icon:const FaIcon(FontAwesomeIcons.wifi),
-            margin: EdgeInsets.only(left: 20,top: 20,right: Get.width/2)
+            icon:const FaIcon(FontAwesomeIcons.wifi,color: Colors.white,),
+            margin: EdgeInsets.only(left: 20,top: 20,right: Get.width/2),
+            backgroundColor:Colors.red
         );
       }
     });
