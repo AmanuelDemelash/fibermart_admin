@@ -1,8 +1,12 @@
 
 import 'package:fibermart_admin/screens/homepage/widgets/customer/customercontroller.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/dashborad/widgets/carddashbord.dart';
+import 'package:fibermart_admin/screens/homepage/widgets/dashborad/widgets/linechart.dart';
+import 'package:fibermart_admin/screens/homepage/widgets/dashborad/widgets/pichart.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/order/controllers/ordercontroller.dart';
+import 'package:fibermart_admin/screens/homepage/widgets/product/productcontroller.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/sales/controller/salescontroller.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -46,14 +50,16 @@ class HomeDashborad extends StatelessWidget {
                     GetBuilder<OrderController>(
                       init: Get.find<OrderController>(),
                         builder:(controller) =>
-                        CardDashbord(title: "${controller.flowerPotOrders.value.length}",subtitle: "Order received",color: Colors.green,icon: Icons.shopping_cart,)),
-                   GetBuilder<SalesController>(
+                        CardDashbord(title: "${controller.flowerPotOrders.value.length}",subtitle: "Order received",color: Colors.green,icon: Icons.add_shopping_cart,)),
+                    GetBuilder<SalesController>(
                    init: Get.find<SalesController>(),
                      builder:(controller) => CardDashbord(title: "${controller.salesList.value.length}",subtitle: "Total sales",color: Colors.deepPurple,icon: Icons.people),),
                     GetBuilder<CustomerController>(
                       init: Get.find<CustomerController>(),
                       builder:(controller) =>CardDashbord(title: "${controller.customerList.value.length}",subtitle: "Total customer",color: Constants().primColor,icon: Icons.people),),
-                    CardDashbord(title: "123",subtitle: "Pending order",color: Colors.orange,icon: Icons.add_shopping_cart,),
+                    GetBuilder<ProductController>(
+                     init: Get.find<ProductController>(),
+                     builder:(controller) => CardDashbord(title: "${controller.flowerpotList.value.length}",subtitle: "Total Products",color: Colors.orange,icon: Icons.shopping_cart,),),
                     CardDashbord(title: "60",subtitle: "Completed order",color: Colors.redAccent,icon: Icons.check_circle,)
                   ],
                 ),
@@ -63,35 +69,30 @@ class HomeDashborad extends StatelessWidget {
               Row(
                 children: [
                  Container(
-                      height: 400,
+                      height: 500,
                       width: Get.width/2,
                       padding:const EdgeInsets.all(15),
                       decoration: BoxDecoration(
                         color: Constants().scafoldColor,
                         borderRadius: BorderRadius.circular(10)
                       ),
-                      child:const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Sale statics",style: TextStyle(fontSize: 20),)
-                        ],
-                      )
+                      child: SizedBox( height:400,
+                              width: Get.width/2,
+                              child: LineChartt())
+
                     ),
                   Expanded(
                     child: Container(
-                        height: 400,
                         margin:const EdgeInsets.only(left: 15),
                         padding:const EdgeInsets.all(15),
                         decoration: BoxDecoration(
                             color: Constants().scafoldColor,
                             borderRadius: BorderRadius.circular(10)
                         ),
-                        child:const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Most Celling\n category",style: TextStyle(fontSize: 20),)
-                          ],
-                        )
+                        child:
+                            PieChartSample2()
+
+
                     ),
                   )
                 ].animate(interval: 400.ms).fade(duration: 300.ms),

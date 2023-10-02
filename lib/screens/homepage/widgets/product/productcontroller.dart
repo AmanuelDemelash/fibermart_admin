@@ -7,12 +7,13 @@ import 'package:get/get.dart';
 import '../../../../api/user_sheet.dart';
 
 class ProductController extends GetxController{
+  RxInt selectedIndex=0.obs;
+  List<String> orderSelectionToggle=["FlowerPot","Kiosk"];
 
   RxBool isLoading =true.obs;
   RxBool isAddNewProduct=false.obs;
   RxBool idDeleting=false.obs;
   Rx<List<Flowerpot>> flowerpotList=Rx<List<Flowerpot>>([]);
-
 
   @override
   void onInit() {

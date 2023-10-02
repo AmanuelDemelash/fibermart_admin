@@ -6,50 +6,25 @@ import 'package:get/get.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../../utils/widgets/loading.dart';
+import '../../controller/homepageController.dart';
 
 class Products extends StatelessWidget {
   const Products({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        backgroundColor: Constants().backColor,
-        appBar: AppBar(
-          elevation: 0,
-          flexibleSpace:const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Product",style: TextStyle(fontSize:25,),),
-                Text("product in stock",style: TextStyle(color: Colors.black38,fontSize: 17),),
-              ],
-            ),
-          ),
-           backgroundColor: Constants().backColor,
-          automaticallyImplyLeading: false,
-
-          bottom: TabBar(
-              tabs:const[
-            Tab(text: "Flower pot",),
-            Tab(text: "Kiosk",)
-          ],
-            indicatorColor: Constants().primColor,
-            indicatorWeight: 3,
-            indicatorSize: TabBarIndicatorSize.label,
-          ),
-        ),
-        body:TabBarView(children:[
-          Container(
+    return
+        Container(
               width: Get.width,
               padding:const EdgeInsets.all(25),
+              color: Constants().backColor,
               child:SingleChildScrollView(
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         ListTile(
+                          title: const Text("Product",style: TextStyle(fontSize:25,),),
+                          subtitle: const Text("product in stock",style: TextStyle(color: Colors.black38),),
                           trailing:
                           ElevatedButton.icon(
                             label: Text("Add product",style: TextStyle(color: Constants().backColor),),
@@ -71,33 +46,90 @@ class Products extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10)
                           ),
                           child:
-                          GetBuilder<ProductController>(
-                            init: Get.find<ProductController>(),
-                            builder:(controller) => SizedBox(
-                              width: Get.width,
-                              child: PaginatedDataTable(
-                                  showCheckboxColumn: true,
-                                  rowsPerPage:10,
-                                  arrowHeadColor: Constants().primColor,
-                                  columns:const [
-                                    DataColumn(label: Text("Id")),
-                                    DataColumn(label: Text("Name")),
-                                    DataColumn(label: Text("Price")),
-                                    DataColumn(label: Text("")),
-                                  ],
-                                  source: ProductDatatableSource(controller: controller)),
-                            ),),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                  width: Get.width,
+                                  child: Obx(
+                                        () => Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      children: List.generate(2, (index) {
+                                        return
+                                          GestureDetector(
+                                            onTap: () =>Get.find<ProductController>().selectedIndex
+                                                .value = index,
+                                            child: AnimatedContainer(
+                                              duration:
+                                              const Duration(seconds:100),
+                                              margin:const EdgeInsets.only(right: 10),
+                                              child: Center(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text( Get.find<ProductController>().orderSelectionToggle[index],
+                                                      style: TextStyle(
+                                                        fontSize: Get.find<ProductController>().selectedIndex
+                                                            .value ==
+                                                            index
+                                                            ? 17
+                                                            : 13,
+                                                        fontWeight: Get.find<ProductController>().selectedIndex
+                                                            .value ==
+                                                            index
+                                                            ? FontWeight.bold
+                                                            : FontWeight.normal,
+                                                        color:
+                                                        Get.find<ProductController>().selectedIndex
+                                                            .value ==
+                                                            index
+                                                            ? Constants().primColor
+                                                            : Colors.black54,
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: 100,
+                                                      height:4,
+                                                      color:  Get.find<ProductController>().selectedIndex
+                                                          .value ==
+                                                          index
+                                                          ? Constants().primColor
+                                                          : Constants().scafoldColor,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                      }),
+                                    ),
+                                  )),
+                              const SizedBox(height: 20,),
+                              GetBuilder<ProductController>(
+                                init: Get.find<ProductController>(),
+                                builder:(controller) => SizedBox(
+                                  width: Get.width,
+                                  child: PaginatedDataTable(
+                                      showCheckboxColumn: true,
+                                      rowsPerPage:10,
+                                      arrowHeadColor: Constants().primColor,
+                                      columns:const [
+                                        DataColumn(label: Text("Id")),
+                                        DataColumn(label: Text("Name")),
+                                        DataColumn(label: Text("Price")),
+                                        DataColumn(label: Text("")),
+                                      ],
+                                      source: ProductDatatableSource(controller: controller)),
+                                ),),
+                            ],
+                          ),
 
                         )
                       ]
                   )
               )
-          ).animate().slideX(),
-          Container()
-        ])
-
-      ),
-    )
+          ).animate().slideX()
     ;
   }
 }
@@ -111,7 +143,7 @@ class ProductDatatableSource extends DataTableSource {
     return  DataRow(cells: [
       DataCell(Text(controller.flowerpotList.value[index].id.toString())),
       DataCell(Text(controller.flowerpotList.value[index].name.toString())),
-      DataCell(Text("ETB${controller.flowerpotList.value[index].price.toString()}")),
+      DataCell(Text("ETB ${controller.flowerpotList.value[index].price.toString()}")),
       DataCell(
           InkWell(
             onTap:() {
