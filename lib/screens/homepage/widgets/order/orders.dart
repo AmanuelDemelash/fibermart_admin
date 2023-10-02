@@ -30,17 +30,20 @@ class Orders extends StatelessWidget {
           subtitle:Text("your customer orders",style: TextStyle(color: Colors.black38),),
         ),
         const SizedBox(height: 25,),
-        Row(
-         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CardDashbord(title: "20",subtitle: "Pending Orders",color: Colors.green,icon: Icons.shopping_cart,),
-            const SizedBox(width: 20,),
-            CardDashbord(title: "1050",subtitle: "Completed Order",color: Colors.deepPurple,icon: Icons.check_circle),
-            const SizedBox(width: 20,),
-            CardDashbord(title: "10k",subtitle: "Canceled Order",color: Constants().primColor,icon: Icons.cancel),
-            const SizedBox(width: 20,),
-            CardDashbord(title: "${Get.find<OrderController>().flowerPotOrders.value.length}",subtitle: "Total order",color: Colors.orange,icon: Icons.add_shopping_cart,),
-          ],
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              CardDashbord(title: "20",subtitle: "Pending Orders",color: Colors.green,icon: Icons.shopping_cart,),
+              const SizedBox(width: 20,),
+              CardDashbord(title: "1050",subtitle: "Completed Order",color: Colors.deepPurple,icon: Icons.check_circle),
+              const SizedBox(width: 20,),
+              CardDashbord(title: "10k",subtitle: "Canceled Order",color: Constants().primColor,icon: Icons.cancel),
+              const SizedBox(width: 20,),
+              CardDashbord(title: "${Get.find<OrderController>().flowerPotOrders.value.length}",subtitle: "Total order",color: Colors.orange,icon: Icons.add_shopping_cart,),
+            ],
+          ),
         ),
         const SizedBox(height: 25,),
         Container(

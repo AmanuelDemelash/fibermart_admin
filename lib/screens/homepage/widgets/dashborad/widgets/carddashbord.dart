@@ -19,7 +19,11 @@ class CardDashbord extends StatelessWidget {
       padding:const EdgeInsets.all(15),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Constants().scafoldColor
+          color: Constants().scafoldColor,
+        boxShadow:[
+          BoxShadow(color: Constants().scafoldColor),
+          BoxShadow(color: color,blurRadius:4)
+        ]
       ),
       child:  Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -42,7 +46,7 @@ class CardDashbord extends StatelessWidget {
           ),
           Row(
             children: [
-              Text("21%",style: TextStyle(color:color),),
+              Text("",style: TextStyle(color:color),),
               Icon(Icons.auto_graph,color:color,)
             ],
           )

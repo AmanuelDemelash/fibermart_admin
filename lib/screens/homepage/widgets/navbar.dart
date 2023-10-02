@@ -14,12 +14,13 @@ class NavBar extends StatelessWidget {
         padding:const EdgeInsets.only(left: 15,right: 15,top: 10),
         width: Get.width,
         height:80,
-        color: Constants().scafoldColor,
+        color: Constants().primColor,
         child:
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("FiberMart",style: TextStyle(fontWeight: FontWeight.bold,fontSize:30,color: Constants().primColor),),
+            const Image(image: AssetImage("assets/images/logo.png",),width:60,height:60,fit: BoxFit.cover,),
+            const Text("FiberMart",style: TextStyle(fontWeight: FontWeight.bold,fontSize:30,color: Colors.white),),
             const SizedBox(width:200,),
             SizedBox(
               width:500,
@@ -55,11 +56,23 @@ class NavBar extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const FaIcon(FontAwesomeIcons.bell),
+                const FaIcon(FontAwesomeIcons.bell,color: Colors.white,),
                 const SizedBox(width: 15,),
-                CircleAvatar(
-                  radius:30,
-                  backgroundColor: Constants().backColor,
+                PopupMenuButton<String>(itemBuilder:(context) => [
+                  PopupMenuItem(child: const Text("Myaccount"),onTap: () {
+                  },),
+                  PopupMenuItem(child:const Row(
+                    children: [
+                      Icon(Icons.logout,color: Colors.red,),
+                      Text("Log out"),
+                    ],
+                  ),onTap: () {
+
+                  },),
+                ],
+                  color: Colors.white,
+
+
                 )
               ],
             )

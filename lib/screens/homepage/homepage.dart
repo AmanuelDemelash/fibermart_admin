@@ -1,9 +1,11 @@
 
 import 'package:fibermart_admin/screens/homepage/controller/homepageController.dart';
+import 'package:fibermart_admin/screens/homepage/widgets/customer/customer.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/dashborad/homeDashborad.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/navbar.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/order/orders.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/product/products.dart';
+import 'package:fibermart_admin/screens/homepage/widgets/sales/sales.dart';
 import 'package:fibermart_admin/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,11 +34,9 @@ class HomePage extends StatelessWidget {
                           NavigationRailDestination(icon:Icon(Icons.dashboard_customize_outlined), label:Text("Dashboard")),
                           NavigationRailDestination(icon:Icon(Icons.pages_rounded), label:Text("Product")),
                           NavigationRailDestination(icon:Icon(Icons.add_shopping_cart), label:Text("Orders")),
-                          NavigationRailDestination(icon:Icon(Icons.category), label:Text("Category")),
                           NavigationRailDestination(icon:Icon(Icons.person), label:Text("Sales")),
                           NavigationRailDestination(icon:Icon(Icons.people), label:Text("Customers")),
-                          NavigationRailDestination(icon:Icon(Icons.price_change), label:Text("Coupon")),
-                          NavigationRailDestination(icon:Icon(Icons.auto_graph), label:Text("Report")),
+                          NavigationRailDestination(icon:Icon(Icons.category), label:Text("Category")),
                           NavigationRailDestination(icon:Icon(Icons.settings), label:Text("Shop Setting")),
                         ],
                         selectedIndex:Get.find<HomepageController>().intialPage.value,
@@ -58,15 +58,16 @@ class HomePage extends StatelessWidget {
                         physics:const NeverScrollableScrollPhysics(),
                         controller: pageController,
                         children: [
-                          //dashbord
                           HomeDashborad(),
                           Products(),
-                          //orders
                           Orders(),
+                          Sales(),
+                          Customer(),
                           Container(
                             color: Constants().backColor,
                             child: Text("catagory"),
                           ),
+
 
                         ],
                       ),

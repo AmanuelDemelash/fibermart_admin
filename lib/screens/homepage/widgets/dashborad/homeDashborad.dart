@@ -1,6 +1,8 @@
 
-import 'package:fibermart_admin/screens/homepage/controller/homepageController.dart';
+import 'package:fibermart_admin/screens/homepage/widgets/customer/customercontroller.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/dashborad/widgets/carddashbord.dart';
+import 'package:fibermart_admin/screens/homepage/widgets/order/controllers/ordercontroller.dart';
+import 'package:fibermart_admin/screens/homepage/widgets/sales/controller/salescontroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -36,15 +38,25 @@ class HomeDashborad extends StatelessWidget {
                     }, child:Text("Add product",style: TextStyle(color: Constants().backColor),)),
               ),
               const SizedBox(height: 25,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CardDashbord(title: "200",subtitle: "Order received",color: Colors.green,icon: Icons.shopping_cart,),
-                  CardDashbord(title: "1050",subtitle: "Total sale",color: Colors.deepPurple,icon: Icons.monetization_on_rounded),
-                  CardDashbord(title: "10k",subtitle: "Total customer",color: Constants().primColor,icon: Icons.people),
-                  CardDashbord(title: "123",subtitle: "Pending order",color: Colors.orange,icon: Icons.add_shopping_cart,),
-                  CardDashbord(title: "60",subtitle: "Completed order",color: Colors.redAccent,icon: Icons.check_circle,)
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GetBuilder<OrderController>(
+                      init: Get.find<OrderController>(),
+                        builder:(controller) =>
+                        CardDashbord(title: "${controller.flowerPotOrders.value.length}",subtitle: "Order received",color: Colors.green,icon: Icons.shopping_cart,)),
+                   GetBuilder<SalesController>(
+                   init: Get.find<SalesController>(),
+                     builder:(controller) => CardDashbord(title: "${controller.salesList.value.length}",subtitle: "Total sales",color: Colors.deepPurple,icon: Icons.people),),
+                    GetBuilder<CustomerController>(
+                      init: Get.find<CustomerController>(),
+                      builder:(controller) =>CardDashbord(title: "${controller.customerList.value.length}",subtitle: "Total customer",color: Constants().primColor,icon: Icons.people),),
+                    CardDashbord(title: "123",subtitle: "Pending order",color: Colors.orange,icon: Icons.add_shopping_cart,),
+                    CardDashbord(title: "60",subtitle: "Completed order",color: Colors.redAccent,icon: Icons.check_circle,)
+                  ],
+                ),
               ),
              const SizedBox(height: 20,),
             // statics

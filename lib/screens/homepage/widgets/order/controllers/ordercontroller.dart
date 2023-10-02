@@ -24,4 +24,8 @@ class OrderController extends GetxController{
 
   }
 
+  Future<void> refresh()async{
+    await getFlowerPotOrders();
+  }
+
 }

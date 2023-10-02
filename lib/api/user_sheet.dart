@@ -8,7 +8,6 @@ import '../models/kiosk.dart';
 import '../models/kioskForm.dart';
 import '../models/sales.dart';
 
-
 class UserSheet {
   static const _creedentials = r'''
 {
@@ -72,12 +71,21 @@ static Future<List<FlowerpotFormModel>?> getordersList() async {
 }
 
 
+  static Future<Flowerpot> addNewFp(Flowerpot flowerpot)async{
+
+    try {
+      await _flowerpotSheet!.values.appendRow([flowerpot.id,flowerpot.name,flowerpot.price]);
+      return flowerpot;
+    } catch (e) {
+      // Handle any exceptions that occurred during row insertion
+      throw Exception('Failed to add the flowerpot: $e');
+    }
+  }
 static Future<List<Flowerpot>?> getFPList() async {
   if (_flowerpotSheet == null) return null;
 
   final json = await _flowerpotSheet!.values.map.allRows();
   if (json == null) return null;
-
   List<Flowerpot> flowerpotList = json.map((item) => Flowerpot.fromJson(item)).toList();
   return flowerpotList;
 }
@@ -92,20 +100,38 @@ static Future<List<KioskModel>?> getKioskList() async {
   return kioskList;
 }
 
+// sales
 static Future<List<SalesTeam>?> getSalesList() async {
   if (_salesSheet == null) return null;
-  
-
   final json = await _salesSheet!.values.map.allRows();
   if (json == null) return null;
 
   List<SalesTeam> salesList = json.map((item) => SalesTeam.fromJson(item)).toList();
   return salesList;
 }
+static Future<SalesTeam> addNewSales(SalesTeam sales)async{
 
+    try {
+      await _salesSheet!.values.appendRow([sales.id,sales.name]);
+      return sales;
+    } catch (e) {
+      // Handle any exceptions that occurred during row insertion
+      throw Exception('Failed to add the sale: $e');
+    }
+  }
+  static Future<bool> deleteSales(int index)async{
+    try {
+      await _salesSheet!.deleteRow(index+2);
+      return true;
+    } catch (e) {
+      // Handle any exceptions that occurred during row insertion
+      throw Exception('Failed to delete the sale: $e');
+    }
+  }
+
+// customer type
 static Future<List<CustomerTypes>?> getCustomerTypes() async {
   if (_customerTypes == null) return null;
-  
 
   final json = await _customerTypes!.values.map.allRows();
   if (json == null) return null;
@@ -113,13 +139,30 @@ static Future<List<CustomerTypes>?> getCustomerTypes() async {
   List<CustomerTypes> customertypes = json.map((item) => CustomerTypes.fromJson(item)).toList();
   return customertypes;
 }
+static Future<CustomerTypes> addNewCustomer(CustomerTypes customer)async{
+    try {
+      await _customerTypes!.values.appendRow([customer.id,customer.name]);
+      return customer;
+    } catch (e) {
+      // Handle any exceptions that occurred during row insertion
+      throw Exception('Failed to add the customer: $e');
+    }
+  }
+  static Future<bool> deleteCustomer(int index)async{
+    try {
+      await _customerTypes!.deleteRow(index+2);
+      return true;
+    } catch (e) {
+      // Handle any exceptions that occurred during row insertion
+      throw Exception('Failed to delete the customer type: $e');
+    }
+  }
 
 static Future<int> getFPRowCount() async  {
   if (_postFPOrders == null) return 0;
    final lastRow = await _postFPOrders!.values.lastRow();
    return lastRow == null ? 0 : int.tryParse(lastRow.first)?? 0;
 }
-
 static Future<int> getKioskRowCount() async  {
   if (_postKioskOrders == null) return 0;
    final lastRow = await _postKioskOrders!.values.lastRow();
@@ -129,7 +172,6 @@ static Future<int> getKioskRowCount() async  {
 
 static Future<FlowerpotFormModel> postFPOrder(FlowerpotFormModel order) async {
 
-  
   final rowValuess = {
     'id': order.id,
     'flowerpot': order.selectedFlowerpot,
@@ -159,9 +201,6 @@ static Future<FlowerpotFormModel> postFPOrder(FlowerpotFormModel order) async {
     throw Exception('Failed to post the order: $e');
   }
 }
-
-
-
 static Future<KioskOrderModel> postKioskOrder(KioskOrderModel order) async {
 
   
@@ -181,7 +220,6 @@ final rowValues = {
   'payments': order.payments,
   'production': order.production,
 };
-
     try {
     await _postKioskOrders!.values.map.appendRow(rowValues);
     return order;
@@ -190,6 +228,9 @@ final rowValues = {
     throw Exception('Failed to post the order: $e');
   }
 }
+
+
+
 
 
 
