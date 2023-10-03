@@ -34,7 +34,7 @@ class UserSheet {
   static Worksheet? _customerTypes;
   static Worksheet? _kioskList;
   static Worksheet? _postKioskOrders;
-
+  static Worksheet? _productGallarys;
 
   static final _gSheets = GSheets(_creedentials);
 
@@ -42,11 +42,13 @@ class UserSheet {
     final spreadsheet = await _gSheets.spreadsheet(_spreadsheetID);
     _flowerpotSheet = await _getWorkSheet(spreadsheet, title: "Flowerpots");
     _salesSheet = await _getWorkSheet(spreadsheet, title: "Sales-Team");
-    _postFPOrders = await _getWorkSheet(spreadsheet, title: "Flowerpots-Orders");
+    _postFPOrders =
+        await _getWorkSheet(spreadsheet, title: "Flowerpots-Orders");
     _customerTypes = await _getWorkSheet(spreadsheet, title: "Customer-Types");
     _kioskList = await _getWorkSheet(spreadsheet, title: "Kiosk-List");
     _postKioskOrders = await _getWorkSheet(spreadsheet, title: "Kiosk-Orders");
-
+    _productGallarys =
+        await _getWorkSheet(spreadsheet, title: "Product-Gallery");
   }
 
   static Future<Worksheet> _getWorkSheet(
@@ -54,44 +56,47 @@ class UserSheet {
     required String title,
   }) async {
     try {
-     return spreadsheet.worksheetByTitle(title)!;
+      return spreadsheet.worksheetByTitle(title)!;
     } catch (e) {
-       return await spreadsheet.addWorksheet(title);
+      return await spreadsheet.addWorksheet(title);
     }
   }
 
-static Future<List<FlowerpotFormModel>?> getordersList() async {
-  if (_postFPOrders == null) return null;
+  static Future<List<FlowerpotFormModel>?> getordersList() async {
+    if (_postFPOrders == null) return null;
 
-  final json = await _postFPOrders!.values.map.allRows();
-  if (json == null) return null;
+    final json = await _postFPOrders!.values.map.allRows();
+    if (json == null) return null;
 
-  List<FlowerpotFormModel> flowerpotList = json.map((item) => FlowerpotFormModel.fromJson(item)).toList();
-  return flowerpotList;
-}
+    List<FlowerpotFormModel> flowerpotList =
+        json.map((item) => FlowerpotFormModel.fromJson(item)).toList();
+    return flowerpotList;
+  }
 
-
-  static Future<Flowerpot> addNewFp(Flowerpot flowerpot)async{
-
+  static Future<Flowerpot> addNewFp(Flowerpot flowerpot) async {
     try {
-      await _flowerpotSheet!.values.appendRow([flowerpot.id,flowerpot.name,flowerpot.price]);
+      await _flowerpotSheet!.values
+          .appendRow([flowerpot.id, flowerpot.name, flowerpot.price]);
       return flowerpot;
     } catch (e) {
       // Handle any exceptions that occurred during row insertion
       throw Exception('Failed to add the flowerpot: $e');
     }
   }
-static Future<List<Flowerpot>?> getFPList() async {
-  if (_flowerpotSheet == null) return null;
 
-  final json = await _flowerpotSheet!.values.map.allRows();
-  if (json == null) return null;
-  List<Flowerpot> flowerpotList = json.map((item) => Flowerpot.fromJson(item)).toList();
-  return flowerpotList;
-}
-  static Future<bool> deleteFp(int index)async{
+  static Future<List<Flowerpot>?> getFPList() async {
+    if (_flowerpotSheet == null) return null;
+
+    final json = await _flowerpotSheet!.values.map.allRows();
+    if (json == null) return null;
+    List<Flowerpot> flowerpotList =
+        json.map((item) => Flowerpot.fromJson(item)).toList();
+    return flowerpotList;
+  }
+
+  static Future<bool> deleteFp(int index) async {
     try {
-      await _flowerpotSheet!.deleteRow(index+2);
+      await _flowerpotSheet!.deleteRow(index + 2);
       return true;
     } catch (e) {
       // Handle any exceptions that occurred during row insertion
@@ -99,38 +104,41 @@ static Future<List<Flowerpot>?> getFPList() async {
     }
   }
 
-static Future<List<KioskModel>?> getKioskList() async {
-  if (_kioskList == null) return null;
+  static Future<List<KioskModel>?> getKioskList() async {
+    if (_kioskList == null) return null;
 
-  final json = await _kioskList!.values.map.allRows();
-  if (json == null) return null;
+    final json = await _kioskList!.values.map.allRows();
+    if (json == null) return null;
 
-  List<KioskModel> kioskList = json.map((item) => KioskModel.fromJson(item)).toList();
-  return kioskList;
-}
+    List<KioskModel> kioskList =
+        json.map((item) => KioskModel.fromJson(item)).toList();
+    return kioskList;
+  }
 
 // sales
-static Future<List<SalesTeam>?> getSalesList() async {
-  if (_salesSheet == null) return null;
-  final json = await _salesSheet!.values.map.allRows();
-  if (json == null) return null;
+  static Future<List<SalesTeam>?> getSalesList() async {
+    if (_salesSheet == null) return null;
+    final json = await _salesSheet!.values.map.allRows();
+    if (json == null) return null;
 
-  List<SalesTeam> salesList = json.map((item) => SalesTeam.fromJson(item)).toList();
-  return salesList;
-}
-static Future<SalesTeam> addNewSales(SalesTeam sales)async{
+    List<SalesTeam> salesList =
+        json.map((item) => SalesTeam.fromJson(item)).toList();
+    return salesList;
+  }
 
+  static Future<SalesTeam> addNewSales(SalesTeam sales) async {
     try {
-      await _salesSheet!.values.appendRow([sales.id,sales.name]);
+      await _salesSheet!.values.appendRow([sales.id, sales.name]);
       return sales;
     } catch (e) {
       // Handle any exceptions that occurred during row insertion
       throw Exception('Failed to add the sale: $e');
     }
   }
-  static Future<bool> deleteSales(int index)async{
+
+  static Future<bool> deleteSales(int index) async {
     try {
-      await _salesSheet!.deleteRow(index+2);
+      await _salesSheet!.deleteRow(index + 2);
       return true;
     } catch (e) {
       // Handle any exceptions that occurred during row insertion
@@ -138,28 +146,42 @@ static Future<SalesTeam> addNewSales(SalesTeam sales)async{
     }
   }
 
+  static Future<List<KioskOrderModel>?> getKioskOrderList() async {
+    if (_postKioskOrders == null) return null;
+
+    final json = await _postKioskOrders!.values.map.allRows();
+    if (json == null) return null;
+
+    List<KioskOrderModel> kioskOrderList =
+        json.map((item) => KioskOrderModel.fromJson(item)).toList();
+    return kioskOrderList;
+  }
+
 // customer type
-static Future<List<CustomerTypes>?> getCustomerTypes() async {
-  if (_customerTypes == null) return null;
+  static Future<List<CustomerTypes>?> getCustomerTypes() async {
+    if (_customerTypes == null) return null;
 
-  final json = await _customerTypes!.values.map.allRows();
-  if (json == null) return null;
+    final json = await _customerTypes!.values.map.allRows();
+    if (json == null) return null;
 
-  List<CustomerTypes> customertypes = json.map((item) => CustomerTypes.fromJson(item)).toList();
-  return customertypes;
-}
-static Future<CustomerTypes> addNewCustomer(CustomerTypes customer)async{
+    List<CustomerTypes> customertypes =
+        json.map((item) => CustomerTypes.fromJson(item)).toList();
+    return customertypes;
+  }
+
+  static Future<CustomerTypes> addNewCustomer(CustomerTypes customer) async {
     try {
-      await _customerTypes!.values.appendRow([customer.id,customer.name]);
+      await _customerTypes!.values.appendRow([customer.id, customer.name]);
       return customer;
     } catch (e) {
       // Handle any exceptions that occurred during row insertion
       throw Exception('Failed to add the customer: $e');
     }
   }
-  static Future<bool> deleteCustomer(int index)async{
+
+  static Future<bool> deleteCustomer(int index) async {
     try {
-      await _customerTypes!.deleteRow(index+2);
+      await _customerTypes!.deleteRow(index + 2);
       return true;
     } catch (e) {
       // Handle any exceptions that occurred during row insertion
@@ -167,81 +189,75 @@ static Future<CustomerTypes> addNewCustomer(CustomerTypes customer)async{
     }
   }
 
-static Future<int> getFPRowCount() async  {
-  if (_postFPOrders == null) return 0;
-   final lastRow = await _postFPOrders!.values.lastRow();
-   return lastRow == null ? 0 : int.tryParse(lastRow.first)?? 0;
-}
-static Future<int> getKioskRowCount() async  {
-  if (_postKioskOrders == null) return 0;
-   final lastRow = await _postKioskOrders!.values.lastRow();
-   return lastRow == null ? 0 : int.tryParse(lastRow.first)?? 0;
-}                             
-  
+  static Future<int> getFPRowCount() async {
+    if (_postFPOrders == null) return 0;
+    final lastRow = await _postFPOrders!.values.lastRow();
+    return lastRow == null ? 0 : int.tryParse(lastRow.first) ?? 0;
+  }
 
-static Future<FlowerpotFormModel> postFPOrder(FlowerpotFormModel order) async {
+  static Future<int> getKioskRowCount() async {
+    if (_postKioskOrders == null) return 0;
+    final lastRow = await _postKioskOrders!.values.lastRow();
+    return lastRow == null ? 0 : int.tryParse(lastRow.first) ?? 0;
+  }
 
-  final rowValuess = {
-    'id': order.id,
-    'flowerpot': order.selectedFlowerpot,
-    'color': order.selectedColor.value.toString(),
-    'quantity': order.quantity,
-    'logo': order.hasLogo,
-    'logoFilePath': order.logoFilePath,
-    'entityType': order.selectedEntityType,
-    'orderName': order.orderName,
-    'orderPhone': order.orderPhone,
-    'orderAddress': order.orderAddress,
-    'orderNote': order.orderNote,
-    'UrgentDelivery': order.isUrgentDelivery,
-    'sales': order.selectedSales,
-    'discount': order.discount,
-    'totalPrice': order.totalPrice,
-    'createdAt': order.createdAt,
-    'payments': order.payments,
-    'production': order.production
-  };
+  static Future<FlowerpotFormModel> postFPOrder(
+      FlowerpotFormModel order) async {
+    final rowValuess = {
+      'id': order.id,
+      'flowerpot': order.selectedFlowerpot,
+      'color': order.selectedColor.value.toString(),
+      'quantity': order.quantity,
+      'logo': order.hasLogo,
+      'logoFilePath': order.logoFilePath,
+      'entityType': order.selectedEntityType,
+      'orderName': order.orderName,
+      'orderPhone': order.orderPhone,
+      'orderAddress': order.orderAddress,
+      'orderNote': order.orderNote,
+      'UrgentDelivery': order.isUrgentDelivery,
+      'sales': order.selectedSales,
+      'discount': order.discount,
+      'totalPrice': order.totalPrice,
+      'createdAt': order.createdAt,
+      'payments': order.payments,
+      'production': order.production
+    };
 
     try {
-    await _postFPOrders!.values.map.appendRow(rowValuess);
-    return order;
-  } catch (e) {
-    // Handle any exceptions that occurred during row insertion
-    throw Exception('Failed to post the order: $e');
+      await _postFPOrders!.values.map.appendRow(rowValuess);
+      return order;
+    } catch (e) {
+      // Handle any exceptions that occurred during row insertion
+      throw Exception('Failed to post the order: $e');
+    }
   }
-}
-static Future<KioskOrderModel> postKioskOrder(KioskOrderModel order) async {
 
-  
-final rowValues = {
-  'id': order.id,
-  'kiosk': order.selectedKiosk.toString(),
-  'color': order.selectedColor.value,
-  'quantity': order.quantity,
-  'useCase': order.useCase,
-  'requestingEntityType': order.requestingEntityType,
-  'orderName': order.orderName,
-  'orderPhone': order.orderPhone,
-  'orderAddress': order.orderAddress,
-  'orderNote': order.orderNote,
-  'sales': order.selectedSales,
-  'createdAt': order.createdAt,
-  'payments': order.payments,
-  'production': order.production,
-};
+  static Future<KioskOrderModel> postKioskOrder(KioskOrderModel order) async {
+    final rowValues = {
+      'id': order.id,
+      'kiosk': order.selectedKiosk.toString(),
+      'color': order.selectedColor != null ? order.selectedColor!.value : null,
+      'quantity': order.quantity,
+      'useCase': order.useCase,
+      'requestingEntityType': order.requestingEntityType,
+      'orderName': order.orderName,
+      'orderPhone': order.orderPhone,
+      'orderAddress': order.orderAddress,
+      'orderNote': order.orderNote,
+      'sales': order.selectedSales,
+      'createdAt': order.createdAt,
+      'payments': order.payments,
+      'production': order.production,
+    };
     try {
-    await _postKioskOrders!.values.map.appendRow(rowValues);
-    return order;
-  } catch (e) {
-    // Handle any exceptions that occurred during row insertion
-    throw Exception('Failed to post the order: $e');
+      await _postKioskOrders!.values.map.appendRow(rowValues);
+      return order;
+    } catch (e) {
+      // Handle any exceptions that occurred during row insertion
+      throw Exception('Failed to post the order: $e');
+    }
   }
-}
-
-
-
-
-
 
   // static Future<String?> uploadImage(File file) async {
   //   try {
@@ -262,7 +278,4 @@ final rowValues = {
   //     return null;
   //   }
   // }
-
-
-
 }

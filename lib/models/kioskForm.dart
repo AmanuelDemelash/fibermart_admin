@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class KioskOrderModel {
-  final int id;
+  final dynamic id;
   final String selectedKiosk;
-  final Color selectedColor;
+  final Color? selectedColor;
   final int quantity;
   final String? useCase;
   final String requestingEntityType;
@@ -37,10 +37,10 @@ class KioskOrderModel {
 
   factory KioskOrderModel.fromJson(Map<String, dynamic> json) {
     return KioskOrderModel(
-      id: json['id'] as int,
+      id: json['id'],
       selectedKiosk: json['selectedkiosk'] as String,
-      selectedColor: Color(json['color'] as int),
-      quantity: json['quantity'] as int,
+      selectedColor: json['color'] != null ? Color(json['color'] as int) : null,
+      quantity: int.parse(json['quantity']),
       useCase: json['useCase'] as String?,
       requestingEntityType: json['requestingEntityType'] as String,
       orderName: json['orderName'] as String,
@@ -50,7 +50,7 @@ class KioskOrderModel {
       selectedSales: json['selectedSales'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
       payments: json['payments'] as String,
-      production: json['production'] as bool,
+      production: bool.parse(json['production']),
     );
   }
 
@@ -58,7 +58,7 @@ class KioskOrderModel {
     return {
       'id': id,
       'selectedkiosk': selectedKiosk,
-      'selectedColor': selectedColor.value,
+      'selectedColor': selectedColor != null ? selectedColor!.value : null,
       'quantity': quantity,
       'useCase': useCase,
       'requestingEntityType': requestingEntityType,
