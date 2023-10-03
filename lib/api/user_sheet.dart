@@ -89,6 +89,15 @@ static Future<List<Flowerpot>?> getFPList() async {
   List<Flowerpot> flowerpotList = json.map((item) => Flowerpot.fromJson(item)).toList();
   return flowerpotList;
 }
+  static Future<bool> deleteFp(int index)async{
+    try {
+      await _flowerpotSheet!.deleteRow(index+2);
+      return true;
+    } catch (e) {
+      // Handle any exceptions that occurred during row insertion
+      throw Exception('Failed to delete the Fp: $e');
+    }
+  }
 
 static Future<List<KioskModel>?> getKioskList() async {
   if (_kioskList == null) return null;

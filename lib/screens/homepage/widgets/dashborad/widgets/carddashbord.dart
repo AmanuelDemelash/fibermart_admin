@@ -22,7 +22,7 @@ class CardDashbord extends StatelessWidget {
           color: Constants().scafoldColor,
         boxShadow:[
           BoxShadow(color: Constants().scafoldColor),
-          BoxShadow(color: color,blurRadius:4)
+          BoxShadow(color: color,blurRadius:2)
         ]
       ),
       child:  Column(
@@ -31,7 +31,7 @@ class CardDashbord extends StatelessWidget {
         children: [
           ListTile(
             contentPadding:const EdgeInsets.all(10),
-            title:Text(title),
+            title:Text(title,style: const TextStyle(fontSize: 22),),
             subtitle:Text(subtitle),
             trailing: Container(
               padding:const EdgeInsets.all(10),
@@ -50,7 +50,7 @@ class CardDashbord extends StatelessWidget {
               Icon(Icons.auto_graph,color:color,)
             ],
           )
-        ].animate(interval: 300.ms).fade(duration: 200.ms),
+        ]
       ),
     );
   }

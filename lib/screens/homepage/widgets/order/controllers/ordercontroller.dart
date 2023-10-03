@@ -5,8 +5,10 @@ import '../../../../../api/user_sheet.dart';
 import '../../../../../models/flowerpotform.dart';
 
 class OrderController extends GetxController{
+  RxInt urgentOrder=0.obs;
   RxBool isLoading =true.obs;
   Rx<List<FlowerpotFormModel>> flowerPotOrders=Rx<List<FlowerpotFormModel>>([]);
+  Rx<List<FlowerpotFormModel>> urgentFlowerPotOrders=Rx<List<FlowerpotFormModel>>([]);
 
   @override
   void onInit() {
@@ -21,11 +23,20 @@ class OrderController extends GetxController{
       isLoading.value=true;
     }
     isLoading.value=false;
+    getUrgentOrder();
 
   }
 
-  Future<void> refresh()async{
-    await getFlowerPotOrders();
+  Future<void> getUrgentOrder()async{
+    for(int i=0;i<=flowerPotOrders.value.length;i++){
+      if(flowerPotOrders.value[i].isUrgentDelivery==true){
+        urgentOrder.value++;
+        urgentFlowerPotOrders.value.add(flowerPotOrders.value[i]);
+      }
+    }
+    update();
+
   }
+
 
 }

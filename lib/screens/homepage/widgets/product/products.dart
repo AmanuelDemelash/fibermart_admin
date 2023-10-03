@@ -129,7 +129,7 @@ class Products extends StatelessWidget {
                       ]
                   )
               )
-          ).animate().slideX()
+          ).animate().fade(duration:const Duration(milliseconds: 200))
     ;
   }
 }

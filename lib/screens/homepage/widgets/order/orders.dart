@@ -2,12 +2,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/order/controllers/ordercontroller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-
 import '../../../../utils/constants.dart';
 import '../../controller/homepageController.dart';
 import '../dashborad/widgets/carddashbord.dart';
@@ -32,18 +29,18 @@ class Orders extends StatelessWidget {
         const SizedBox(height: 25,),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Row(
-           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              CardDashbord(title: "20",subtitle: "Pending Orders",color: Colors.green,icon: Icons.shopping_cart,),
-              const SizedBox(width: 20,),
-              CardDashbord(title: "1050",subtitle: "Completed Order",color: Colors.deepPurple,icon: Icons.check_circle),
-              const SizedBox(width: 20,),
-              CardDashbord(title: "10k",subtitle: "Canceled Order",color: Constants().primColor,icon: Icons.cancel),
-              const SizedBox(width: 20,),
-              CardDashbord(title: "${Get.find<OrderController>().flowerPotOrders.value.length}",subtitle: "Total order",color: Colors.orange,icon: Icons.add_shopping_cart,),
-            ],
+          child:GetBuilder<OrderController>(
+            init: Get.find<OrderController>(),
+            builder: (controller) =>Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                CardDashbord(title: "${controller.urgentOrder}",subtitle: "Urgent Orders",color: Colors.green,icon: Icons.shopping_cart,),
+                const SizedBox(width: 20,),
+                CardDashbord(title: "${controller.flowerPotOrders.value.length}",subtitle: "Total order",color: Colors.orange,icon: Icons.add_shopping_cart,),
+              ],
+            ),
           ),
+
         ),
         const SizedBox(height: 25,),
         Container(
@@ -119,28 +116,34 @@ class Orders extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: Get.width,
-                      child: PaginatedDataTable(
-                          showCheckboxColumn: true,
-                          rowsPerPage:10,
-                          columns:const [
-                            DataColumn(label: Text("Id")),
-                            DataColumn(label: Text("Logo")),
-                            DataColumn(label: Text("SelectedFlowerpot")),
-                            DataColumn(label: Text("Quantity")),
-                            DataColumn(label: Text("SelectedEntityType")),
-                            DataColumn(label: Text("OrderName")),
-                            DataColumn(label: Text("OrderPhone")),
-                            DataColumn(label: Text("OrderAddress")),
-                            DataColumn(label: Text("OrderNote")),
-                            DataColumn(label: Text("IsUrgentDelivery")),
-                            DataColumn(label: Text("SelectedSales")),
-                            DataColumn(label: Text("Discount")),
-                            DataColumn(label: Text("TotalPrice")),
-                            DataColumn(label: Text("CreatedAt")),
-                            DataColumn(label: Text("Payments")),
-                            DataColumn(label: Text("")),
-                          ],
-                          source: ProductDatatableSource()),
+                      child:GetBuilder<OrderController>(
+                        init: Get.find<OrderController>(),
+                        builder: (controller) {
+                       return PaginatedDataTable(
+                              showCheckboxColumn: true,
+                              rowsPerPage:10,
+                              columns:const [
+                                DataColumn(label: Text("Id")),
+                                DataColumn(label: Text("Logo")),
+                                DataColumn(label: Text("SelectedFlowerpot")),
+                                DataColumn(label: Text("Quantity")),
+                                DataColumn(label: Text("SelectedEntityType")),
+                                DataColumn(label: Text("OrderName")),
+                                DataColumn(label: Text("OrderPhone")),
+                                DataColumn(label: Text("OrderAddress")),
+                                DataColumn(label: Text("OrderNote")),
+                                DataColumn(label: Text("IsUrgentDelivery")),
+                                DataColumn(label: Text("SelectedSales")),
+                                DataColumn(label: Text("Discount")),
+                                DataColumn(label: Text("TotalPrice")),
+                                DataColumn(label: Text("CreatedAt")),
+                                DataColumn(label: Text("Payments")),
+                                DataColumn(label: Text("")),
+                              ],
+                              source: ProductDatatableSource(controller: controller));
+                        },
+                      )
+
                     ),
                   ],
                 ))
@@ -150,39 +153,48 @@ class Orders extends StatelessWidget {
         )
       ],
       ),
-    )).animate().slideX());
+    )
+      ).animate().fade(duration:const Duration(milliseconds: 200)));
   }
 }
 
 class ProductDatatableSource extends DataTableSource {
+  OrderController controller;
+  ProductDatatableSource({required this.controller});
+
   @override
   DataRow? getRow(int index) {
     return  DataRow(cells: [
       DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].id.toString())),
-      DataCell(CachedNetworkImage(
-        imageUrl:Get.find<OrderController>().flowerPotOrders.value[index].logoFilePath!,
+      DataCell(
+        controller.flowerPotOrders.value[index].hasLogo==true?
+        CachedNetworkImage(
+        imageUrl:controller.flowerPotOrders.value[index].logoFilePath!,
         placeholder: (context, url) =>FaIcon(FontAwesomeIcons.image,color: Constants().primColor,),
         errorWidget: (context, url, error) =>FaIcon(FontAwesomeIcons.image,color: Constants().primColor,),
         width: 50,
         height: 50,
-      ),),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].selectedFlowerpot.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].quantity.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].selectedEntityType.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].orderName.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].orderPhone.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].orderAddress.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].orderNote.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].isUrgentDelivery.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].selectedSales.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].discount.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].totalPrice.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].createdAt.toString())),
-      DataCell(Text(Get.find<OrderController>().flowerPotOrders.value[index].payments.toString())),
-      DataCell(
-          IconButton(
-              onPressed:() {
-              }, icon:const Icon(Icons.delete_forever)),
+      ):FaIcon(FontAwesomeIcons.image,color: Constants().primColor,)),
+      DataCell(Text(controller.flowerPotOrders.value[index].selectedFlowerpot.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].quantity.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].selectedEntityType.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].orderName.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].orderPhone.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].orderAddress.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].orderNote.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].isUrgentDelivery.toString(),
+        style: TextStyle(color:controller.flowerPotOrders.value[index].isUrgentDelivery==true?Colors.green:Colors.black,
+        fontSize: controller.flowerPotOrders.value[index].isUrgentDelivery==true?18:15
+        ),)),
+      DataCell(Text(controller.flowerPotOrders.value[index].selectedSales.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].discount.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].totalPrice.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].createdAt.toString())),
+      DataCell(Text(controller.flowerPotOrders.value[index].payments.toString())),
+      const DataCell(
+        Row(
+          children:[Icon(Icons.delete_forever,color: Colors.red,),Text("delete",style: TextStyle(color: Colors.red),)],
+        ),
     ),
 
     ]);
@@ -192,7 +204,7 @@ class ProductDatatableSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount =>Get.find<OrderController>().flowerPotOrders.value.length;
+  int get rowCount =>controller.flowerPotOrders.value.length;
 
   @override
   int get selectedRowCount => 0;

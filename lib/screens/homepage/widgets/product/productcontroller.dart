@@ -20,7 +20,7 @@ class ProductController extends GetxController{
     super.onInit();
     getFlowerPotList();
   }
-
+   // flowerpot
   getFlowerPotList()async{
     isLoading.value=true;
     flowerpotList.value= (await UserSheet.getFPList())!;
@@ -40,18 +40,20 @@ class ProductController extends GetxController{
     }
 
   }
+  deleteFp(int index)async{
+    idDeleting.value=true;
+    var result=await UserSheet.deleteFp(index);
+    if(result){
+      idDeleting.value=false;
+      flowerpotList.value.remove(flowerpotList.value[index]);
+      update();
+      getSnackbar("Flowerpot  deleted");
+    }
 
-  // deleteCustomertype(int index)async{
-  //   idDeleting.value=true;
-  //   var result=await UserSheet.deleteCustomer(index);
-  //   if(result){
-  //     idDeleting.value=false;
-  //     customerList.value.remove(customerList.value[index]);
-  //     update();
-  //     getSnackbar("Customer type deleted");
-  //   }
-  //
-  // }
+  }
+
+  // kisok
+
   getSnackbar(String message){
     Get.snackbar("Success", message,
         backgroundColor: Colors.green,

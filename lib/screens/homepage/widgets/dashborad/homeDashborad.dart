@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/customer/customercontroller.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/dashborad/widgets/carddashbord.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/dashborad/widgets/linechart.dart';
@@ -9,6 +10,7 @@ import 'package:fibermart_admin/screens/homepage/widgets/sales/controller/salesc
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import '../../../../utils/constants.dart';
 
@@ -28,18 +30,9 @@ class HomeDashborad extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ListTile(
-                title: const Text("Dashboard",style: TextStyle(fontSize: 25,),),
-                subtitle:const Text("welcome to your dashboard",style: TextStyle(color: Colors.black38),),
-                trailing: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Constants().primColor,
-                        elevation: 0,
-                        padding:const EdgeInsets.all(20)
-                    ),
-                    onPressed:() {
-
-                    }, child:Text("Add product",style: TextStyle(color: Constants().backColor),)),
+              const ListTile(
+                title: Text("Dashboard",style: TextStyle(fontSize: 25,),),
+                subtitle:Text("welcome to your dashboard",style: TextStyle(color: Colors.black54),),
               ),
               const SizedBox(height: 25,),
               Padding(
@@ -54,13 +47,16 @@ class HomeDashborad extends StatelessWidget {
                     GetBuilder<SalesController>(
                    init: Get.find<SalesController>(),
                      builder:(controller) => CardDashbord(title: "${controller.salesList.value.length}",subtitle: "Total sales",color: Colors.deepPurple,icon: Icons.people),),
-                    GetBuilder<CustomerController>(
-                      init: Get.find<CustomerController>(),
-                      builder:(controller) =>CardDashbord(title: "${controller.customerList.value.length}",subtitle: "Total customer",color: Constants().primColor,icon: Icons.people),),
                     GetBuilder<ProductController>(
                      init: Get.find<ProductController>(),
                      builder:(controller) => CardDashbord(title: "${controller.flowerpotList.value.length}",subtitle: "Total Products",color: Colors.orange,icon: Icons.shopping_cart,),),
-                    CardDashbord(title: "60",subtitle: "Completed order",color: Colors.redAccent,icon: Icons.check_circle,)
+                    GetBuilder<CustomerController>(
+                      init: Get.find<CustomerController>(),
+                      builder:(controller) =>CardDashbord(title: "${controller.customerList.value.length}",subtitle: "Total customer",color: Constants().primColor,icon: Icons.people),),
+                    GetBuilder<OrderController>(
+                      init: Get.find<OrderController>(),
+                      builder:(controller) =>  CardDashbord(title:controller.urgentOrder.value.toString(),subtitle: "Urgent order",color: Colors.redAccent,icon: Icons.check_circle,) ,)
+
                   ],
                 ),
               ),
@@ -69,7 +65,7 @@ class HomeDashborad extends StatelessWidget {
               Row(
                 children: [
                  Container(
-                      height: 500,
+                      height:360,
                       width: Get.width/2,
                       padding:const EdgeInsets.all(15),
                       decoration: BoxDecoration(
@@ -83,6 +79,7 @@ class HomeDashborad extends StatelessWidget {
                     ),
                   Expanded(
                     child: Container(
+                      height: 360,
                         margin:const EdgeInsets.only(left: 15),
                         padding:const EdgeInsets.all(15),
                         decoration: BoxDecoration(
@@ -98,7 +95,7 @@ class HomeDashborad extends StatelessWidget {
                 ].animate(interval: 400.ms).fade(duration: 300.ms),
               ),
               const SizedBox(height: 20,),
-              // recent orders
+              // urgent orders
               Container(
                 width: Get.width,
                   padding:const EdgeInsets.only(left: 15,top: 20,right: 15),
@@ -109,25 +106,35 @@ class HomeDashborad extends StatelessWidget {
                 child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Recent Completed Orders",style: TextStyle(fontSize:18),),
+                    const Text("Urgent Orders",style: TextStyle(fontSize:18),),
                     const SizedBox(height:20,),
                     SizedBox(
                       width: Get.width,
-                      child: PaginatedDataTable(
-                          showCheckboxColumn: true,
-                          rowsPerPage: 10,
-                          columns:const [
-                            DataColumn(label: Text("Id")),
-                            DataColumn(label: Text("Name")),
-                            DataColumn(label: Text("Customer")),
-                            DataColumn(label: Text("Date")),
-                            DataColumn(label: Text("Phone")),
-                            DataColumn(label: Text("#Items")),
-                            DataColumn(label: Text("Total price")),
-                            DataColumn(label: Text("Status")),
-                            DataColumn(label: Text("")),
-                          ],
-                          source: ProductDatatableSource()),
+                      child: GetBuilder<OrderController>(
+                        init: Get.find<OrderController>(),
+                        builder: (controller) =>controller.urgentOrder.value==0?const Text("No any urgent order yet"): PaginatedDataTable(
+                            showCheckboxColumn: true,
+                            rowsPerPage:7,
+                            columns:const [
+                              DataColumn(label: Text("Id")),
+                              DataColumn(label: Text("Logo")),
+                              DataColumn(label: Text("SelectedFlowerpot")),
+                              DataColumn(label: Text("Quantity")),
+                              DataColumn(label: Text("SelectedEntityType")),
+                              DataColumn(label: Text("OrderName")),
+                              DataColumn(label: Text("OrderPhone")),
+                              DataColumn(label: Text("OrderAddress")),
+                              // DataColumn(label: Text("OrderNote")),
+                              DataColumn(label: Text("IsUrgentDelivery")),
+                              // DataColumn(label: Text("SelectedSales")),
+                              // DataColumn(label: Text("Discount")),
+                              DataColumn(label: Text("TotalPrice")),
+                              DataColumn(label: Text("CreatedAt")),
+                              DataColumn(label: Text("Payments")),
+                            ],
+                            source: ProductDatatableSource(controller: controller))
+                      )
+
                     ),
                   ],
                 )
@@ -137,40 +144,51 @@ class HomeDashborad extends StatelessWidget {
             ],
           ),
         )
-    );
+    ).animate().fade(duration:const Duration(milliseconds: 200));
   }
 }
 
 class ProductDatatableSource extends DataTableSource {
+  OrderController controller;
+  ProductDatatableSource({required this.controller});
 @override
 DataRow? getRow(int index) {
 return DataRow(cells: [
-  DataCell(Text("0976")),
-  DataCell(Text("Iphone 13"),),
-  DataCell(Text("Amanuwl"),),
-  DataCell(Text("12/3/2023"),),
-  DataCell(Text("987545727"),),
-  DataCell(Text("1"),),
-  DataCell(Text("ETB 50000"),),
-  DataCell(Text("Pending"),),
-  DataCell(Row(
-    children: [
-      IconButton(onPressed:() {
-      }, icon:const Icon(Icons.remove_red_eye)),
-      IconButton(
-          onPressed:() {
-          }, icon:const Icon(Icons.delete_forever)),
-    ],
-  ))
-]
-);
+  DataCell(Text(Get.find<OrderController>().urgentFlowerPotOrders.value[index].id.toString())),
+  DataCell(
+      controller.urgentFlowerPotOrders.value[index].hasLogo==true?
+      CachedNetworkImage(
+        imageUrl:controller.urgentFlowerPotOrders.value[index].logoFilePath!,
+        placeholder: (context, url) =>FaIcon(FontAwesomeIcons.image,color: Constants().primColor,),
+        errorWidget: (context, url, error) =>FaIcon(FontAwesomeIcons.image,color: Constants().primColor,),
+        width: 50,
+        height: 50,
+      ):FaIcon(FontAwesomeIcons.image,color: Constants().primColor,)),
+  DataCell(Text(controller.urgentFlowerPotOrders.value[index].selectedFlowerpot.toString())),
+  DataCell(Text(controller.urgentFlowerPotOrders.value[index].quantity.toString())),
+  DataCell(Text(controller.urgentFlowerPotOrders.value[index].selectedEntityType.toString())),
+  DataCell(Text(controller.urgentFlowerPotOrders.value[index].orderName.toString())),
+  DataCell(Text(controller.urgentFlowerPotOrders.value[index].orderPhone.toString())),
+  DataCell(Text(controller.urgentFlowerPotOrders.value[index].orderAddress.toString())),
+  // DataCell(Text(controller.urgentFlowerPotOrders.value[index].orderNote.toString())),
+  DataCell(Text(controller.urgentFlowerPotOrders.value[index].isUrgentDelivery.toString(),
+    style: TextStyle(color:controller.urgentFlowerPotOrders.value[index].isUrgentDelivery==true?Colors.green:Colors.black,
+        fontSize: controller.urgentFlowerPotOrders.value[index].isUrgentDelivery==true?18:15
+    ),)),
+  // DataCell(Text(controller.urgentFlowerPotOrders.value[index].selectedSales.toString())),
+  // DataCell(Text(controller.urgentFlowerPotOrders.value[index].discount.toString())),
+  DataCell(Text(controller.urgentFlowerPotOrders.value[index].totalPrice.toString())),
+  DataCell(Text(controller.urgentFlowerPotOrders.value[index].createdAt.toString())),
+  DataCell(Text(controller.urgentFlowerPotOrders.value[index].payments.toString())),
+
+]);
 }
 
 @override
 bool get isRowCountApproximate => false;
 
 @override
-int get rowCount =>20;
+int get rowCount =>controller.urgentFlowerPotOrders.value.length;
 
 @override
 int get selectedRowCount => 0;
