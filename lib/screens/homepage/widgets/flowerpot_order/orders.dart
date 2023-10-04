@@ -55,6 +55,15 @@ class Orders extends StatelessWidget {
                                   width: 20,
                                 ),
                                 CardDashbord(
+                                  title: "${controller.paidOrder.value}",
+                                  subtitle: "Paid Orders",
+                                  color: Colors.blue,
+                                  icon: Icons.payment,
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                CardDashbord(
                                   title:
                                       "${controller.flowerPotOrders.value.length}",
                                   subtitle: "Total order",

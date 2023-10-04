@@ -41,27 +41,28 @@ class KioskOrders extends StatelessWidget {
                         const SizedBox(
                           height: 25,
                         ),
-                        Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            CardDashbord(
-                              title: "20",
-                              subtitle: "Urgent Orders",
-                              color: Colors.green,
-                              icon: Icons.shopping_cart,
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            CardDashbord(
-                              title:
-                                  "${Get.find<KioskOrderController>().kioskOrders.value.length}",
-                              subtitle: "Total order",
-                              color: Colors.orange,
-                              icon: Icons.add_shopping_cart,
-                            ),
-                          ],
-                        ),
+                        GetBuilder<KioskOrderController>(builder: (controller) {
+                          return Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CardDashbord(
+                                title: "${controller.paidOrder.value}",
+                                subtitle: "Paid Orders",
+                                color: Colors.blue,
+                                icon: Icons.payment,
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              CardDashbord(
+                                title: "${controller.kioskOrders.value.length}",
+                                subtitle: "Total order",
+                                color: Colors.orange,
+                                icon: Icons.add_shopping_cart,
+                              ),
+                            ],
+                          );
+                        }),
                         const SizedBox(
                           height: 25,
                         ),

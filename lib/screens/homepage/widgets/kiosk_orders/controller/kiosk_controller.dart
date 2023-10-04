@@ -6,6 +6,7 @@ import '../../../../../models/flowerpotform.dart';
 
 class KioskOrderController extends GetxController {
   RxBool isLoading = true.obs;
+  RxInt paidOrder = 0.obs;
   Rx<List<KioskOrderModel>> kioskOrders = Rx<List<KioskOrderModel>>([]);
 
   @override
@@ -21,6 +22,15 @@ class KioskOrderController extends GetxController {
       isLoading.value = true;
     }
     isLoading.value = false;
-    print(kioskOrders.value.length);
+    getPaidOrder();
+  }
+
+  Future<void> getPaidOrder() async {
+    for (int i = 0; i <= kioskOrders.value.length; i++) {
+      if (kioskOrders.value[i].payments != "Not paid") {
+        paidOrder.value++;
+      }
+    }
+    update();
   }
 }

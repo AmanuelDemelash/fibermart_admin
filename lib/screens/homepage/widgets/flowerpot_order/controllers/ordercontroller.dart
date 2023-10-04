@@ -6,6 +6,7 @@ import '../../../../../models/flowerpotform.dart';
 class OrderController extends GetxController {
   RxInt urgentOrder = 0.obs;
   RxBool isLoading = true.obs;
+  RxInt paidOrder = 0.obs;
   Rx<List<FlowerpotFormModel>> flowerPotOrders =
       Rx<List<FlowerpotFormModel>>([]);
   Rx<List<FlowerpotFormModel>> urgentFlowerPotOrders =
@@ -25,6 +26,7 @@ class OrderController extends GetxController {
     }
     isLoading.value = false;
     getUrgentOrder();
+    getPaidOrder();
   }
 
   Future<void> getUrgentOrder() async {
@@ -32,6 +34,15 @@ class OrderController extends GetxController {
       if (flowerPotOrders.value[i].isUrgentDelivery == true) {
         urgentOrder.value++;
         urgentFlowerPotOrders.value.add(flowerPotOrders.value[i]);
+      }
+    }
+    update();
+  }
+
+  Future<void> getPaidOrder() async {
+    for (int i = 0; i <= flowerPotOrders.value.length; i++) {
+      if (flowerPotOrders.value[i].payments != "Not paid") {
+        paidOrder.value++;
       }
     }
     update();

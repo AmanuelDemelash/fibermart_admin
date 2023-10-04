@@ -44,53 +44,56 @@ class HomeDashborad extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GetBuilder<OrderController>(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GetBuilder<OrderController>(
+                          init: Get.find<OrderController>(),
+                          builder: (controller) => CardDashbord(
+                                title:
+                                    "${controller.flowerPotOrders.value.length}",
+                                subtitle: "Order received",
+                                color: Colors.green,
+                                icon: Icons.add_shopping_cart,
+                              )),
+                      GetBuilder<SalesController>(
+                        init: Get.find<SalesController>(),
+                        builder: (controller) => CardDashbord(
+                            title: "${controller.salesList.value.length}",
+                            subtitle: "Total sales",
+                            color: Colors.deepPurple,
+                            icon: Icons.people),
+                      ),
+                      GetBuilder<ProductController>(
+                        init: Get.find<ProductController>(),
+                        builder: (controller) => CardDashbord(
+                          title: "${controller.flowerpotList.value.length}",
+                          subtitle: "Total Products",
+                          color: Colors.orange,
+                          icon: Icons.shopping_cart,
+                        ),
+                      ),
+                      GetBuilder<CustomerController>(
+                        init: Get.find<CustomerController>(),
+                        builder: (controller) => CardDashbord(
+                            title: "${controller.customerList.value.length}",
+                            subtitle: "Total customer",
+                            color: Constants().primColor,
+                            icon: Icons.people),
+                      ),
+                      GetBuilder<OrderController>(
                         init: Get.find<OrderController>(),
                         builder: (controller) => CardDashbord(
-                              title:
-                                  "${controller.flowerPotOrders.value.length}",
-                              subtitle: "Order received",
-                              color: Colors.green,
-                              icon: Icons.add_shopping_cart,
-                            )),
-                    GetBuilder<SalesController>(
-                      init: Get.find<SalesController>(),
-                      builder: (controller) => CardDashbord(
-                          title: "${controller.salesList.value.length}",
-                          subtitle: "Total sales",
-                          color: Colors.deepPurple,
-                          icon: Icons.people),
-                    ),
-                    GetBuilder<ProductController>(
-                      init: Get.find<ProductController>(),
-                      builder: (controller) => CardDashbord(
-                        title: "${controller.flowerpotList.value.length}",
-                        subtitle: "Total Products",
-                        color: Colors.orange,
-                        icon: Icons.shopping_cart,
-                      ),
-                    ),
-                    GetBuilder<CustomerController>(
-                      init: Get.find<CustomerController>(),
-                      builder: (controller) => CardDashbord(
-                          title: "${controller.customerList.value.length}",
-                          subtitle: "Total customer",
-                          color: Constants().primColor,
-                          icon: Icons.people),
-                    ),
-                    GetBuilder<OrderController>(
-                      init: Get.find<OrderController>(),
-                      builder: (controller) => CardDashbord(
-                        title: controller.urgentOrder.value.toString(),
-                        subtitle: "Urgent order",
-                        color: Colors.redAccent,
-                        icon: Icons.check_circle,
-                      ),
-                    )
-                  ],
+                          title: controller.urgentOrder.value.toString(),
+                          subtitle: "Urgent order",
+                          color: Colors.redAccent,
+                          icon: Icons.check_circle,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(
