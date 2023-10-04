@@ -47,8 +47,6 @@ class HomePage extends StatelessWidget {
                     NavigationRailDestination(
                         icon: Icon(Icons.people), label: Text("Customers")),
                     NavigationRailDestination(
-                        icon: Icon(Icons.category), label: Text("Category")),
-                    NavigationRailDestination(
                         icon: Icon(Icons.settings),
                         label: Text("Shop Setting")),
                   ],
