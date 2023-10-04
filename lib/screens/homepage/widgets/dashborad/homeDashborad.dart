@@ -4,6 +4,7 @@ import 'package:fibermart_admin/screens/homepage/widgets/dashborad/widgets/cardd
 import 'package:fibermart_admin/screens/homepage/widgets/dashborad/widgets/linechart.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/dashborad/widgets/pichart.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/flowerpot_order/controllers/ordercontroller.dart';
+import 'package:fibermart_admin/screens/homepage/widgets/kiosk_orders/controller/kiosk_controller.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/product/productcontroller.dart';
 import 'package:fibermart_admin/screens/homepage/widgets/sales/controller/salescontroller.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -53,7 +54,7 @@ class HomeDashborad extends StatelessWidget {
                           init: Get.find<OrderController>(),
                           builder: (controller) => CardDashbord(
                                 title:
-                                    "${controller.flowerPotOrders.value.length}",
+                                    "${controller.flowerPotOrders.value.length + Get.find<KioskOrderController>().kioskOrders.value.length}",
                                 subtitle: "Order received",
                                 color: Colors.green,
                                 icon: Icons.add_shopping_cart,

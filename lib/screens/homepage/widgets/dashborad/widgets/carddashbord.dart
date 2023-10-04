@@ -35,9 +35,12 @@ class CardDashbord extends StatelessWidget {
               contentPadding: const EdgeInsets.all(10),
               title: Text(
                 title,
-                style: const TextStyle(fontSize: 22),
+                style: TextStyle(fontSize: 22, color: color),
               ),
-              subtitle: Text(subtitle),
+              subtitle: Text(
+                subtitle,
+                style: TextStyle(color: color),
+              ),
               trailing: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(shape: BoxShape.circle, color: color),
